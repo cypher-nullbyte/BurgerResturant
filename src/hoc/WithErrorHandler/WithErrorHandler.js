@@ -11,22 +11,63 @@ const WithErrorHandler=(WrappedComponent,axios)=>
             this.state={
                 error:null
             };
+            this._mounted=React.createRef(false);
+        }
+        async doTheJob_of_componentWillMount()
+        {
+                axios.interceptors.request.use(req=>{
+                    this.setState({error:null});
+                    // console.log('flag-1');
+                    return req;
+                });
+                axios.interceptors.response.use(res=>res,err=>{
+                    this.setState({error:err});
+                    // console.log('flag-2');
+                });
+        }
+        componentDidMount()
+        {
+            this._mounted.current=true;
         }
         componentDidUpdate()
         {
-            this.reqInterceptor=axios.interceptors.request.use(req=>{
-                this.setState({error:null});
-                return req;
-            },error=>{this.setState({error:error})});
-            this.resInterceptor=axios.interceptors.response.use(res=>res,error=>{
-                this.setState({error:error});
-            });
+            if(this._mounted.current)
+            {
+                this.reqInterceptor=axios.interceptors.request.use(req=>{
+                    this.setState({error:null});
+                    return req;
+                },error=>{
+                    // console.log('flag-3');
+                    this.setState({error:error})
+                });
+
+                this.resInterceptor=axios.interceptors.response.use(res=>{
+                    this.setState({error:null});
+                    return res;
+                },error=>{
+                    // console.log('flag-4');
+                    this.setState({error:error});
+                });
+            }
+            
         }
-        
+        async axiosCleanUp()
+        {
+            console.log(this._mounted.current);
+            if(this._mounted.current)
+            {
+                // console.log('flag-5');
+                await axios.interceptors.request.eject(this.reqInterceptor);
+                // console.log('flag-6');
+                await axios.interceptors.response.eject(this.resInterceptor);
+            }
+            
+        }
         componentWillUnmount()
         {
-            axios.interceptors.request.eject(this.reqInterceptor);
-            axios.interceptors.response.eject(this.resInterceptor);
+           this.axiosCleanUp();
+           this._mounted.current=false;
+        //    console.log('flag-7');
         }
         errorConfirmedHandler=()=>
         {
@@ -34,6 +75,7 @@ const WithErrorHandler=(WrappedComponent,axios)=>
         }
         render()
         {
+            this.doTheJob_of_componentWillMount();
             return (
                 <Aux>
                     <Modal show={this.state.error} modalClosed={this.errorConfirmedHandler}>

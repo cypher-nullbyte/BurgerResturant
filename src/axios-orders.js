@@ -1,7 +1,7 @@
 import Axios from "axios";
-
+import env from "react-dotenv";
 const instance=Axios.create({
-    baseURL:"<URL TO REALTIME FIREBASE SERVER>",
+    baseURL:env.FIREBASE,
 });
 
 export default instance;

@@ -14,7 +14,6 @@ const INGREDIENT_PRICES={
     cheese:0.4,
     meat:1.3,
     bacon:0.7
-
 };
 
 class BurgerBuilder extends Component
@@ -31,7 +30,7 @@ class BurgerBuilder extends Component
             error:false
         };
     }
-
+    
     componentDidMount()
     {
         console.log(this.props);
@@ -53,6 +52,7 @@ class BurgerBuilder extends Component
             },0);
         this.setState({purchasable:sum>0});
     }
+
     addIngredientHandler=(type)=>
     {
         const oldCount=this.state.ingredients[type];

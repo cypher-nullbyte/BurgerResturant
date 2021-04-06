@@ -27,6 +27,7 @@ class Orders extends Component
                     id:key
                 });
             }
+            console.log(this.props);
             this.setState({loading:false, orders:fetchedOrders});
         })
         .catch(err=>
