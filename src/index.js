@@ -5,10 +5,19 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import {Provider} from 'react-redux';
-import {createStore} from 'redux';
-import reducer from './store/reducer';
+import {applyMiddleware, combineReducers, compose, createStore} from 'redux';
+import thunk from 'redux-thunk';
+import orderReducer from './store/reducers/order';
+import BurgerBuilderReducer from './store/reducers/burgerBuilder';
 
-const store=createStore(reducer);
+const composeEnhancer=window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+const rootReducer=combineReducers({
+  burgerBuilder:BurgerBuilderReducer,
+  order:orderReducer,
+});
+
+const store=createStore(rootReducer,composeEnhancer(applyMiddleware(thunk)));
 
 ReactDOM.render(
   <React.StrictMode>
