@@ -25,7 +25,7 @@ window.env = {
   "npm_config_userconfig": "/home/cypher/.npmrc",
   "DBUS_SESSION_BUS_ADDRESS": "unix:path=/run/user/1000/bus,guid=7af0372120f8424db5010897608d0479",
   "DBUS_STARTER_BUS_TYPE": "session",
-  "GIO_LAUNCHED_DESKTOP_FILE_PID": "2621",
+  "GIO_LAUNCHED_DESKTOP_FILE_PID": "9166",
   "COLORTERM": "truecolor",
   "COLOR": "1",
   "npm_config_metrics_registry": "https://registry.npmjs.org/",
